@@ -1,50 +1,33 @@
 import { buildVirtualStock } from "./lib/engine";
 
-const events = [
-  {
-    id: "e1",
-    type: "entry",
-    date: "2026-07-01",
-    boutiqueId: "w0",
-    productId: "p1",
-    quantity: 10,
-    purchasePrice: 45000,
-  },
+import { Sidebar, Card, Stat } from "./components/ui";
 
-  {
-    id: "t1",
-    type: "transfer",
-    date: "2026-07-02",
-    from: "w0",
-    to: "b1",
-    productId: "p1",
-    quantity: 4,
-  },
-
-  {
-    id: "e2",
-    type: "entry",
-    date: "2026-07-05",
-    boutiqueId: "w0",
-    productId: "p1",
-    quantity: 5,
-    purchasePrice: 48000,
-  },
-
-  {
-    id: "s1",
-    type: "sale",
-    date: "2026-07-06",
-    boutiqueId: "b1",
-    productId: "p1",
-    quantity: 1,
-    salePrice: 55000,
-  },
-];
+import { ShoppingCart } from "lucide-react";
 
 export default function App() {
-  const eng = buildVirtualStock(events);
   return (
-    <pre style={{ padding: 20 }}>{JSON.stringify(eng.virtualLog, null, 2)}</pre>
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <Sidebar page="vente" onNav={(id) => alert(id)} col={false} badge={3} />
+      <div
+        style={{
+          padding: 22,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+        }}
+      >
+        <Stat
+          label="Ventes du jour"
+          value="1 250 000 F"
+          sub="12 transactions"
+          Icon={ShoppingCart}
+          color="#0fae86"
+        />
+        <Card>
+          Le panneau de gauche est le vrai menu de Margo — cliquez dessus.
+        </Card>
+      </div>
+    </div>
   );
 }
