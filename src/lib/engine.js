@@ -15,7 +15,7 @@ export function buildVirtualStock(rawEvents) {
     )
     .map((x) => x.e);
   const stock = {}; // {bId: {pId: {qty, costPrice}}}
-  const price = {}; // {pId: current national purchase price}
+  const prices = {}; // {pId: current national purchase price}
   const saleResults = {}; // {eventId: {costPerUnit, margin, totalMargin, cancelled}}
   const virtualLog = []; //virtual gains/losses, one line PER affected boutique
   const anomalies = []; //detected oversells
@@ -49,8 +49,10 @@ export function buildVirtualStock(rawEvents) {
               date: e.date,
               boutiqueId: bId,
               productId: e.productId,
+              prevPrice: oldP,
+              newPrice: newP,
               qtyAdjusted: cell.qty,
-              qtynew: bId === e.boutiqueId ? e.quantity : 0,
+              qtyNew: bId === e.boutiqueId ? e.quantity : 0,
               amount: delta,
               type: delta > 0 ? "gain" : "loss",
               source: "entry",
@@ -68,7 +70,7 @@ export function buildVirtualStock(rawEvents) {
           date: e.date,
           boutiqueId: e.boutiqueId,
           productId: e.productId,
-          asked: e.quality,
+          asked: e.quantity,
           available: s.qty,
         });
       }
@@ -114,12 +116,12 @@ export function buildVirtualStock(rawEvents) {
 }
 
 export function getS(stock, bId, pId) {
-  const s = stock?.[bId]?.[pId] || { qty: 0, costprice: 0 };
+  const s = stock?.[bId]?.[pId] || { qty: 0, costPrice: 0 };
   return { ...s, costVal: s.qty * s.costPrice };
 }
 
 //total quantity of a product accross all stores
-export function totalQty(stock, bId) {
+export function totalQty(stock, pId) {
   return Object.values(stock).reduce((s, bs) => s + (bs[pId]?.qty || 0), 0);
 }
 
