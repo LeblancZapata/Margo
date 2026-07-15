@@ -1,32 +1,31 @@
+import { useState, useMemo } from "react";
+
 import { buildVirtualStock } from "./lib/engine";
 
-import { Sidebar, Card, Stat } from "./components/ui";
+import { Sidebar } from "./components/ui";
 
-import { ShoppingCart } from "lucide-react";
+import { BOUTIQUES_SEED, PRODUCTS_SEED, EVENTS_SEED } from "./data/seed";
 
 export default function App() {
+  const [page, setPage] = useState("dashboard");
+  const [boutiques, setBoutiques] = useState(BOUTIQUES_SEED);
+  const [products, setProducts] = useState(PRODUCTS_SEED);
+  const [events, setEvents] = useState(EVENTS_SEED);
+  const [avances, setAvances] = useState([]);
+
+  const eng = useMemo(() => buildVirtualStock(events), [events]);
+  const addEv = (ev) => setEvents((es) => [...es, ev]);
+  const pendingAv = avances.filter((a) => a.status === "pending").length;
+
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
-      <Sidebar page="vente" onNav={(id) => alert(id)} col={false} badge={3} />
-      <div
-        style={{
-          padding: 22,
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          gap: 14,
-        }}
-      >
-        <Stat
-          label="Ventes du jour"
-          value="1 250 000 F"
-          sub="12 transactions"
-          Icon={ShoppingCart}
-          color="#0fae86"
-        />
-        <Card>
-          Le panneau de gauche est le vrai menu de Margo — cliquez dessus.
-        </Card>
+      <Sidebar page={page} onNav={setPage} col={false} badge={pendingAv} />
+      <div style={{ flex: 1, overflowY: "auto", padding: 22 }}>
+        <h2>Page actuelle: {page}</h2>
+        <p>
+          {products.length} produits · {boutiques.length} boutiques ·{" "}
+          {events.length} événements chargés
+        </p>
       </div>
     </div>
   );
