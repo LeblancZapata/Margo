@@ -444,3 +444,143 @@ export function PH({ title, sub, right }) {
     </div>
   );
 }
+
+// Shown in Approvisionnement before confirming a batch at a different price:
+// previews the virtual gain/loss the new price will generate
+export function VirtualPreview({
+  currentQty,
+  currentPrice,
+  newPrice,
+  newQty,
+  productName,
+}) {
+  if (
+    !currentQty ||
+    !currentPrice ||
+    !newPrice ||
+    Math.round(currentPrice) === Math.round(newPrice)
+  )
+    return null;
+  const delta = currentQty * (newPrice - currentPrice);
+  const isGain = delta > 0;
+  const totalNew = (currentQty + (newQty || 0)) * newPrice;
+  return (
+    <div
+      style={{
+        marginTop: 12,
+        borderRadius: 10,
+        overflow: "hidden",
+        border: `2px solid ${isGain ? C.teal : C.red}`,
+      }}
+    >
+      <div
+        style={{
+          background: isGain ? C.teal : C.red,
+          padding: "8px 14px",
+          color: "white",
+          fontSize: 12,
+          fontWeight: 700,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        {isGain ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+        {isGain ? "MARGE VIRTUELLE GÉNÉRÉE" : "PERTE VIRTUELLE GÉNÉRÉE"}
+      </div>
+      <div style={{ padding: 14, background: isGain ? "#e8f8f4" : "fdf2f0" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
+            gap: 12,
+            alignItems: "center",
+            marginBottom: 12,
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              padding: 10,
+              background: "white",
+              borderRadius: 8,
+            }}
+          >
+            <div style={{ fontSize: 11, color: C.muted }}>Avant</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: C.text }}>
+              {currentQty} unités
+            </div>
+            <div style={{ fontSize: 12, color: C.muted }}>
+              @ {fmt(currentPrice)} F
+            </div>
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: 18,
+              color: isGain ? C.teal : C.red,
+              fontWeight: 700,
+            }}
+          >
+            →
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              padding: 10,
+              background: "white",
+              borderRadius: 8,
+            }}
+          >
+            <div style={{ fontSize: 11, color: C.muted }}>Après</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: C.text }}>
+              {currentQty + (newQty || 0)} unités
+            </div>
+            <div style={{ fontSize: 12, color: C.muted }}>
+              @ {fmt(newPrice)} F
+            </div>
+          </div>
+        </div>
+        <div
+          style={{ background: "white", borderRadius: 8, padding: "10px 14px" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: 13,
+              marginBottom: 6,
+            }}
+          >
+            <span style={{ color: C.muted }}>
+              {currentQty} unités × ({fmt(newPrice)} - {fmt(currentPrice)}) F
+            </span>
+            <span
+              style={{
+                fontWeight: 700,
+                fontSize: 16,
+                color: isGain ? C.teal : C.red,
+              }}
+            >
+              {isGain ? "+" : ""}
+              {fmt(delta)} F
+            </span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: 12,
+              color: C.muted,
+            }}
+          >
+            <span>Nouvelle valeur du stock</span>
+            <span style={{ fontWeight: 600, color: C.navy }}>
+              {fmt(totalNew)} F
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
