@@ -43,7 +43,9 @@ export default function App() {
             eng={eng}
             onEvent={addEv}
           />
-        ) : null}
+        ) : (
+          <h2>À venir : {page}</h2>
+        )}
       </div>
     </div>
   );

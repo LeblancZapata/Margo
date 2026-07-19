@@ -4,7 +4,7 @@ export const BRAND = {
   tagline: "Ventes, stocks & marges virtuelles",
 };
 
-export const C = {
+export const COLORS = {
   navy: "#16279b",
   teal: "#0fae86",
   blue: "#0a9fd8",

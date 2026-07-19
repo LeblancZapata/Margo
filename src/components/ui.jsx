@@ -10,7 +10,7 @@ import {
   CreditCard,
   Sparkles,
 } from "lucide-react";
-import { C, BRAND } from "../theme";
+import { COLORS, BRAND } from "../theme";
 import { MargoMark } from "./MargoLogo";
 import { fmt } from "../lib/format";
 
@@ -84,7 +84,7 @@ export function Sidebar({ page, onNav, col, badge }) {
             padding: col ? "11px 0" : "10px 16px",
             justifyContent: col ? "center" : "flex-start",
             background: page === id ? "rgba(234,114,14,.16)" : "transparent",
-            borderLeft: `3px solid ${page === id ? C.orange : "transparent"}`,
+            borderLeft: `3px solid ${page === id ? COLORS.orange : "transparent"}`,
             border: "none",
             cursor: "pointer",
             width: "100%",
@@ -100,7 +100,7 @@ export function Sidebar({ page, onNav, col, badge }) {
             <span
               style={{
                 marginLeft: "auto",
-                background: C.orange,
+                background: COLORS.orange,
                 color: "white",
                 borderRadius: 10,
                 fontSize: 10,
@@ -170,14 +170,14 @@ export function Stat({ label, value, sub, Icon, color }) {
         <Icon size={22} color={color} />
       </div>
       <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: 11, color: C.muted, marginBottom: 3 }}>
+        <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 3 }}>
           {label}
         </div>
         <div
           style={{
             fontSize: 18,
             fontWeight: 700,
-            color: C.text,
+            color: COLORS.text,
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
@@ -186,7 +186,7 @@ export function Stat({ label, value, sub, Icon, color }) {
           {value}
         </div>
         {sub && (
-          <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>
+          <div style={{ fontSize: 11, color: COLORS.muted, marginTop: 2 }}>
             {sub}
           </div>
         )}
@@ -202,7 +202,7 @@ export function FIn({ label, err, ...p }) {
         <label
           style={{
             fontSize: 12,
-            color: C.muted,
+            color: COLORS.muted,
             marginBottom: 4,
             display: "block",
           }}
@@ -215,17 +215,19 @@ export function FIn({ label, err, ...p }) {
           width: "100%",
           padding: "9px 12px",
           borderRadius: 8,
-          border: `1px solid ${err ? C.red : C.border}`,
+          border: `1px solid ${err ? COLORS.red : COLORS.border}`,
           fontSize: 13,
           outline: "none",
           boxSizing: "border-box",
           fontFamily: "inherit",
-          color: C.text,
+          color: COLORS.text,
         }}
         {...p}
       />
       {err && (
-        <div style={{ fontSize: 11, color: C.red, marginTop: 3 }}>{err}</div>
+        <div style={{ fontSize: 11, color: COLORS.red, marginTop: 3 }}>
+          {err}
+        </div>
       )}
     </div>
   );
@@ -238,7 +240,7 @@ export function FSel({ label, options = [], ...p }) {
         <label
           style={{
             fontSize: 12,
-            color: C.muted,
+            color: COLORS.muted,
             marginBottom: 4,
             display: "block",
           }}
@@ -251,12 +253,12 @@ export function FSel({ label, options = [], ...p }) {
           width: "100%",
           padding: "9px 12px",
           borderRadius: 8,
-          border: `1px solid ${C.border}`,
+          border: `1px solid ${COLORS.border}`,
           fontSize: 13,
           outline: "none",
           boxSizing: "border-box",
           fontFamily: "inherit",
-          color: C.text,
+          color: COLORS.text,
           background: "white",
         }}
         {...p}
@@ -275,29 +277,29 @@ export function FSel({ label, options = [], ...p }) {
 export function Btn({ children, variant = "primary", style = {}, ...p }) {
   const bg =
     variant === "navy"
-      ? `linear-gradient(135deg,${C.navy},#2a3fb8)`
+      ? `linear-gradient(135deg,${COLORS.navy},#2a3fb8)`
       : variant === "orange"
-        ? `linear-gradient(135deg,${C.orange},#d05f04)`
+        ? `linear-gradient(135deg,${COLORS.orange},#d05f04)`
         : variant === "danger"
-          ? `linear-gradient(135deg,${C.red},#c33520)`
+          ? `linear-gradient(135deg,${COLORS.red},#c33520)`
           : variant === "light"
             ? "rgba(255,255,255,.85)"
             : variant === "purple"
-              ? `linear-gradient(135deg,${C.purple},#5f27cd)`
-              : `linear-gradient(135deg,${C.teal},#0c8f6e)`;
+              ? `linear-gradient(135deg,${COLORS.purple},#5f27cd)`
+              : `linear-gradient(135deg,${COLORS.teal},#0c8f6e)`;
   return (
     <button
       className="m-btn"
       style={{
         padding: "9px 18px",
         borderRadius: 10,
-        border: variant === "light" ? `1px solid ${C.border}` : "none",
+        border: variant === "light" ? `1px solid ${COLORS.border}` : "none",
         cursor: "pointer",
         fontSize: 13,
         fontWeight: 600,
         fontFamily: "inherit",
         background: bg,
-        color: variant === "light" ? C.text : "white",
+        color: variant === "light" ? COLORS.text : "white",
         display: "flex",
         alignItems: "center",
         gap: 5,
@@ -323,16 +325,16 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
                 key={i}
                 style={{
                   padding: "9px 12px",
-                  textAlign: c.a || "left",
+                  textAlign: COLORS.a || "left",
                   fontWeight: 600,
-                  color: C.muted,
+                  color: COLORS.muted,
                   fontSize: 12,
-                  borderBottom: `1px solid ${C.border}`,
+                  borderBottom: `1px solid ${COLORS.border}`,
                   background: "rgba(22,39,155,.05)",
                   whiteSpace: "nowrap",
                 }}
               >
-                {c.l}
+                {COLORS.l}
               </th>
             ))}
           </tr>
@@ -342,7 +344,11 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
             <tr>
               <td
                 colSpan={cols.length}
-                style={{ padding: 32, textAlign: "center", color: C.muted }}
+                style={{
+                  padding: 32,
+                  textAlign: "center",
+                  color: COLORS.muted,
+                }}
               >
                 {empty}
               </td>
@@ -353,7 +359,7 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
                 key={i}
                 className="m-row"
                 style={{
-                  borderBottom: `1px solid ${C.border}`,
+                  borderBottom: `1px solid ${COLORS.border}`,
                   background:
                     i % 2 === 0 ? "transparent" : "rgba(22,39,155,.02)",
                 }}
@@ -361,9 +367,12 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
                 {cols.map((c, j) => (
                   <td
                     key={j}
-                    style={{ padding: "9px 12px", textAlign: c.a || "left" }}
+                    style={{
+                      padding: "9px 12px",
+                      textAlign: COLORS.a || "left",
+                    }}
                   >
-                    {c.r ? c.r(r) : r[c.k]}
+                    {COLORS.r ? COLORS.r(r) : r[COLORS.k]}
                   </td>
                 ))}
               </tr>
@@ -378,11 +387,11 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
 export function AM({ type, children }) {
   const s =
     {
-      success: { bg: "#e8f8f4", c: C.teal },
-      error: { bg: "#fdf2f0", c: C.red },
-      info: { bg: "#e8f4ff", c: C.blue },
-      warning: { bg: "#fef9e7", c: C.orange },
-      virtual: { bg: "#f3e8ff", c: C.purple },
+      success: { bg: "#e8f8f4", c: COLORS.teal },
+      error: { bg: "#fdf2f0", c: COLORS.red },
+      info: { bg: "#e8f4ff", c: COLORS.blue },
+      warning: { bg: "#fef9e7", c: COLORS.orange },
+      virtual: { bg: "#f3e8ff", c: COLORS.purple },
     }[type] || {};
   return (
     <div
@@ -417,14 +426,14 @@ export function PH({ title, sub, right }) {
           style={{
             fontSize: 22,
             fontWeight: 800,
-            color: C.text,
+            color: COLORS.text,
             letterSpacing: "-0.4px",
           }}
         >
           {title}
         </div>
         {sub && (
-          <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>
+          <div style={{ fontSize: 13, color: COLORS.muted, marginTop: 2 }}>
             {sub}
           </div>
         )}
@@ -470,12 +479,12 @@ export function VirtualPreview({
         marginTop: 12,
         borderRadius: 10,
         overflow: "hidden",
-        border: `2px solid ${isGain ? C.teal : C.red}`,
+        border: `2px solid ${isGain ? COLORS.teal : COLORS.red}`,
       }}
     >
       <div
         style={{
-          background: isGain ? C.teal : C.red,
+          background: isGain ? COLORS.teal : COLORS.red,
           padding: "8px 14px",
           color: "white",
           fontSize: 12,
@@ -506,11 +515,11 @@ export function VirtualPreview({
               borderRadius: 8,
             }}
           >
-            <div style={{ fontSize: 11, color: C.muted }}>Avant</div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: C.text }}>
+            <div style={{ fontSize: 11, color: COLORS.muted }}>Avant</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: COLORS.text }}>
               {currentQty} unités
             </div>
-            <div style={{ fontSize: 12, color: C.muted }}>
+            <div style={{ fontSize: 12, color: COLORS.muted }}>
               @ {fmt(currentPrice)} F
             </div>
           </div>
@@ -518,7 +527,7 @@ export function VirtualPreview({
             style={{
               textAlign: "center",
               fontSize: 18,
-              color: isGain ? C.teal : C.red,
+              color: isGain ? COLORS.teal : COLORS.red,
               fontWeight: 700,
             }}
           >
@@ -532,11 +541,11 @@ export function VirtualPreview({
               borderRadius: 8,
             }}
           >
-            <div style={{ fontSize: 11, color: C.muted }}>Après</div>
-            <div style={{ fontSize: 15, fontWeight: 700, color: C.text }}>
+            <div style={{ fontSize: 11, color: COLORS.muted }}>Après</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: COLORS.text }}>
               {currentQty + (newQty || 0)} unités
             </div>
-            <div style={{ fontSize: 12, color: C.muted }}>
+            <div style={{ fontSize: 12, color: COLORS.muted }}>
               @ {fmt(newPrice)} F
             </div>
           </div>
@@ -552,14 +561,14 @@ export function VirtualPreview({
               marginBottom: 6,
             }}
           >
-            <span style={{ color: C.muted }}>
+            <span style={{ color: COLORS.muted }}>
               {currentQty} unités × ({fmt(newPrice)} - {fmt(currentPrice)}) F
             </span>
             <span
               style={{
                 fontWeight: 700,
                 fontSize: 16,
-                color: isGain ? C.teal : C.red,
+                color: isGain ? COLORS.teal : COLORS.red,
               }}
             >
               {isGain ? "+" : ""}
@@ -571,11 +580,11 @@ export function VirtualPreview({
               display: "flex",
               justifyContent: "space-between",
               fontSize: 12,
-              color: C.muted,
+              color: COLORS.muted,
             }}
           >
             <span>Nouvelle valeur du stock</span>
-            <span style={{ fontWeight: 600, color: C.navy }}>
+            <span style={{ fontWeight: 600, color: COLORS.navy }}>
               {fmt(totalNew)} F
             </span>
           </div>

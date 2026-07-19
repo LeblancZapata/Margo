@@ -14,7 +14,7 @@ import {
   Sparkles,
   AlertTriangle,
 } from "lucide-react";
-import { C } from "../theme";
+import { COLORS } from "../theme";
 import { fmtS, fmt, todayStr } from "../lib/format";
 import { totalCostVal } from "../lib/engine";
 import { Card, Stat, DT, AM, PH } from "../components/ui";
@@ -102,7 +102,7 @@ export default function DashPage({ events, boutiques, products, eng }) {
           value={`${fmt(tv)} F`}
           sub={`${td.length} transactions`}
           Icon={ShoppingCart}
-          color={C.teal}
+          color={COLORS.teal}
         />
         <Stat
           label="Marges du jour"
@@ -111,31 +111,33 @@ export default function DashPage({ events, boutiques, products, eng }) {
             tv > 0 ? `Taux: ${Math.round((tm / tv) * 100)}%` : "aucune vente"
           }
           Icon={TrendingUp}
-          color={C.navy}
+          color={COLORS.navy}
         />
         <Stat
           label="Fond total (PA)"
           value={`${fmt(totalCV)} F`}
           sub="prix d'achat unifie"
           Icon={Warehouse}
-          color={C.blue}
+          color={COLORS.blue}
         />
         <Stat
           label="Position virtuelle"
           value={fmtS(netVirtual)}
           sub={netVirtual >= 0 ? "marges latentes" : "pertes latentes"}
           Icon={Sparkles}
-          color={netVirtual >= 0 ? C.teal : C.red}
+          color={netVirtual >= 0 ? COLORS.teal : COLORS.red}
         />
       </div>
       {stockAlerts.length > 0 && (
-        <Card style={{ marginBottom: 22, border: `1px solid ${C.orange}55` }}>
+        <Card
+          style={{ marginBottom: 22, border: `1px solid ${COLORS.orange}55` }}
+        >
           <div
             style={{
               fontSize: 14,
               fontWeight: 600,
               marginBottom: 10,
-              color: C.orange,
+              color: COLORS.orange,
               display: "flex",
               alignItems: "center",
               gap: 8,
@@ -159,7 +161,7 @@ export default function DashPage({ events, boutiques, products, eng }) {
                       padding: "2px 10px",
                       borderRadius: 12,
                       background: r.qty === 0 ? "#fdf2f0" : "#fef9e7",
-                      color: r.qty === 0 ? C.red : C.orange,
+                      color: r.qty === 0 ? COLORS.red : COLORS.orange,
                       fontWeight: 700,
                       fontSize: 11,
                     }}
@@ -172,7 +174,7 @@ export default function DashPage({ events, boutiques, products, eng }) {
             rows={stockAlerts.slice(0, 15)}
           />
           {stockAlerts.length > 15 && (
-            <div style={{ fontSize: 12, color: C.muted, marginTop: 8 }}>
+            <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 8 }}>
               … et {stockAlerts.length - 15} autres articles concernés
             </div>
           )}
@@ -197,8 +199,16 @@ export default function DashPage({ events, boutiques, products, eng }) {
                 <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip formatter={(v) => `${fmt(v)} F`} />
-                <Bar dataKey="Ventes" fill={C.navy} radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Marges" fill={C.teal} radius={[4, 4, 0, 0]} />
+                <Bar
+                  dataKey="Ventes"
+                  fill={COLORS.navy}
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="Marges"
+                  fill={COLORS.teal}
+                  radius={[4, 4, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </Card>
@@ -217,24 +227,28 @@ export default function DashPage({ events, boutiques, products, eng }) {
                     justifyContent: "space-between",
                     alignItems: "center",
                     padding: "7px 0",
-                    borderBottom: `1px solid ${C.border}`,
+                    borderBottom: `1px solid ${COLORS.border}`,
                   }}
                 >
                   <div>
                     <div style={{ fontSize: 12, fontWeight: 500 }}>
                       {b.name}
                     </div>
-                    <div style={{ fontSize: 11, color: C.muted }}>
+                    <div style={{ fontSize: 11, color: COLORS.muted }}>
                       {b.responsible}
                     </div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div
-                      style={{ fontSize: 12, fontWeight: 700, color: C.navy }}
+                      style={{
+                        fontSize: 12,
+                        fontWeight: 700,
+                        color: COLORS.navy,
+                      }}
                     >
                       {fmt(b.v)} F
                     </div>
-                    <div style={{ fontSize: 11, color: C.teal }}>
+                    <div style={{ fontSize: 11, color: COLORS.teal }}>
                       {b.t}% marge
                     </div>
                   </div>
@@ -247,9 +261,9 @@ export default function DashPage({ events, boutiques, products, eng }) {
           style={{
             padding: 40,
             textAlign: "center",
-            background: C.card,
+            background: COLORS.card,
             borderRadius: 12,
-            border: `1px solid ${C.border}`,
+            border: `1px solid ${COLORS.border}`,
             marginBottom: 22,
           }}
         >
@@ -258,13 +272,13 @@ export default function DashPage({ events, boutiques, products, eng }) {
             style={{
               fontSize: 15,
               fontWeight: 600,
-              color: C.text,
+              color: COLORS.text,
               marginBottom: 6,
             }}
           >
             Aucune vente enregistree aujourd'hui
           </div>
-          <div style={{ fontSize: 13, color: C.muted }}>
+          <div style={{ fontSize: 13, color: COLORS.muted }}>
             Utilisez la "Saisie des Ventes" pour enregistrer les ventes du jour
             par boutique
           </div>
@@ -287,7 +301,7 @@ export default function DashPage({ events, boutiques, products, eng }) {
               l: "Marges (F)",
               a: "right",
               r: (r) => (
-                <span style={{ color: r.m > 0 ? C.teal : C.muted }}>
+                <span style={{ color: r.m > 0 ? COLORS.teal : COLORS.muted }}>
                   {fmt(r.m)}
                 </span>
               ),
@@ -302,7 +316,7 @@ export default function DashPage({ events, boutiques, products, eng }) {
                       padding: "2px 8px",
                       borderRadius: 12,
                       background: r.t >= 15 ? "#e8f8f4" : "#fdf2f0",
-                      color: r.t >= 15 ? C.teal : C.red,
+                      color: r.t >= 15 ? COLORS.teal : COLORS.red,
                       fontSize: 11,
                     }}
                   >
