@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Store, Check, X, AlertTriangle } from "lucide-react";
-import { C } from "../theme";
+import { COLORS } from "../theme";
 import { fmt, uid, todayStr } from "../lib/format";
 import { getS } from "../lib/engine";
 import { Card, FSel, Btn, AM, PH } from "../components/ui";
@@ -52,9 +52,9 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
 
   //How many units already in cart for this product
   const cartQtyFor = (pid) =>
-    cart.filter((c) => c.pid === pid).reduce((s, c) => s + c.qty, 0);
+    cart.filter((c) => COLORS.pid === pid).reduce((s, c) => s + COLORS.qty, 0);
 
-  const addToCard = (p) => {
+  const addToCart = (p) => {
     const inp = inputs[p.pid] || {};
     const qty = parseInt(inp.qty) || 0;
     const price = parseFloat(inp.price) || 0;
@@ -81,12 +81,13 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
     else setMsg(null);
   };
 
-  const removeFromCart = (cid) => setCard((c) => c.filter((x) => x.id !== cid));
+  const removeFromCart = (cid) =>
+    setCart((c) => COLORS.filter((x) => x.id !== cid));
 
-  const totV = cart.reduce((t, c) => t + c.qty * c.price, 0);
+  const totV = cart.reduce((t, c) => t + COLORS.qty * COLORS.price, 0);
   const totM = cart.reduce((t, c) => {
-    const s = getS(stock, bId, c.pid);
-    return t + (c.price - s.costPrice) * c.qty;
+    const s = getS(stock, bId, COLORS.pid);
+    return t + (COLORS.price - s.costPrice) * COLORS.qty;
   }, 0);
 
   const validate = () => {
@@ -97,9 +98,9 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
         type: "sale",
         date,
         boutiqueId: bId,
-        productId: c.pid,
-        quantity: c.qty,
-        salePrice: c.price,
+        productId: COLORS.pid,
+        quantity: COLORS.qty,
+        salePrice: COLORS.price,
       }),
     );
     setMsg({
@@ -128,7 +129,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
           marginBottom: 10,
         }}
       >
-        <Fsel
+        <FSel
           label="Boutique"
           value={bId}
           onChange={(e) => {
@@ -145,7 +146,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
           <label
             style={{
               fontSize: 12,
-              color: C.muted,
+              color: COLORS.muted,
               marginBottom: 4,
               display: "block",
             }}
@@ -159,17 +160,17 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
               onChange={(e) => setDate(e.target.value)}
               style={{
                 flex: 1,
-                padding: "9x 12px",
+                padding: "9px 12px",
                 borderRadius: 8,
-                border: `1px solid ${C.border}`,
+                border: `1px solid ${COLORS.border}`,
                 fontSize: 13,
                 outline: "none",
                 fontFamily: "inherit",
-                color: C.text,
+                color: COLORS.text,
               }}
             />
           </div>
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
             {[
               { l: "Aujourd'hui", d: 0 },
               { l: "Hier", d: 1 },
@@ -187,15 +188,15 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                     flex: 1,
                     padding: "5px 4px",
                     borderRadius: 6,
-                    border: `1px solid ${active ? C.teal : C.border}`,
-                    background: active ? `${C.teal}18` : "white",
-                    color: active ? C.teal : C.muted,
+                    border: `1px solid ${active ? COLORS.teal : COLORS.border}`,
+                    background: active ? `${COLORS.teal}18` : "white",
+                    color: active ? COLORS.teal : COLORS.muted,
                     cursor: "pointer",
                     fontSize: 11,
                     fontWeight: active ? 600 : 400,
                   }}
                 >
-                  {1}
+                  {l}
                 </button>
               );
             })}
@@ -211,7 +212,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
             borderRadius: 8,
             marginBottom: 14,
             fontSize: 12,
-            color: C.blue,
+            color: COLORS.blue,
           }}
         >
           📅 Saisie en cours pour le{" "}
@@ -234,7 +235,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
             borderRadius: 8,
             marginBottom: 14,
             fontSize: 12,
-            color: C.orange,
+            color: COLORS.orange,
           }}
         >
           <AlertTriangle
@@ -251,7 +252,9 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
       )}
 
       {bId && (
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr" }}>
+        <div
+          style={{ display: "grid", gridTemplateColumns: "2fr 1fr, gap: 16" }}
+        >
           {/* LEFT: product browser */}
           <div>
             <div
@@ -271,12 +274,12 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                     width: "100%",
                     padding: "9px 12px",
                     borderRadius: 9,
-                    border: `1px solid ${C.border}`,
+                    border: `1px solid ${COLORS.border}`,
                     fontSize: 13,
                     outline: "none",
                     boxSizing: "border-box",
                     fontFamily: "inherit",
-                    color: C.text,
+                    color: COLORS.text,
                   }}
                 />
                 {search && (
@@ -290,7 +293,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                       border: "none",
                       background: "none",
                       cursor: "pointer",
-                      color: C.muted,
+                      color: COLORS.muted,
                       fontSize: 16,
                     }}
                   >
@@ -305,9 +308,9 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                   style={{
                     padding: "6px 12px",
                     borderRadius: 7,
-                    border: `1px solid ${filterCat === t ? C.navy : C.border}`,
-                    background: filterCat === t ? C.navy : "white",
-                    color: filterCat === t ? "white" : C.text,
+                    border: `1px solid ${filterCat === t ? COLORS.navy : COLORS.border}`,
+                    background: filterCat === t ? COLORS.navy : "white",
+                    color: filterCat === t ? "white" : COLORS.text,
                     fontSize: 12,
                     fontWeight: filterCat === t ? 600 : 400,
                   }}
@@ -365,7 +368,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                         style={{
                           padding: 24,
                           textAlign: "center",
-                          color: C.muted,
+                          color: COLORS.muted,
                         }}
                       >
                         Aucun produit trouve
@@ -380,14 +383,14 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                       ? "#fff8f0"
                       : i % 2 === 0
                         ? "white"
-                        : "fafafa";
+                        : "#fafafa";
                     const canAdd =
                       parseInt(inp.qty) > 0 && parseFloat(inp.price) > 0;
                     return (
                       <tr
                         key={p.pid}
                         style={{
-                          borderBottom: `1px solid ${C.border}`,
+                          borderBottom: `1px solid ${COLORS.border}`,
                           background: rowBg,
                         }}
                       >
@@ -398,7 +401,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                           <div
                             style={{
                               fontSize: 11,
-                              color: C.muted,
+                              color: COLORS.muted,
                               maxWidth: 130,
                               overflow: "hidden",
                               textOverflow: "ellipsis",
@@ -414,17 +417,17 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                               fontWeight: 700,
                               color:
                                 p.qty === 0
-                                  ? C.red
+                                  ? COLORS.red
                                   : p.qty <= 2
-                                    ? C.orange
-                                    : C.teal,
+                                    ? COLORS.orange
+                                    : COLORS.teal,
                               fontSize: 13,
                             }}
                           >
                             {p.qty}
                           </span>
                           {inCart > 0 && (
-                            <div style={{ fontSize: 10, color: C.orange }}>
+                            <div style={{ fontSize: 10, color: COLORS.orange }}>
                               -{inCart} panier
                             </div>
                           )}
@@ -434,7 +437,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                             padding: "7px 8px",
                             textAlign: "center",
                             fontSize: 11,
-                            color: C.muted,
+                            color: COLORS.muted,
                             whiteSpace: "nowrap",
                           }}
                         >
@@ -454,7 +457,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                               width: 52,
                               padding: "5px 6px",
                               borderRadius: 6,
-                              border: `1px solid ${C.border}`,
+                              border: `1px solid ${COLORS.border}`,
                               textAlign: "center",
                               fontSize: 12,
                               fontFamily: "inherit",
@@ -476,7 +479,7 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                               width: 88,
                               padding: "5px 6px",
                               borderRadius: 6,
-                              border: `1px solid ${C.border}`,
+                              border: `1px solid ${COLORS.border}`,
                               textAlign: "right",
                               fontSize: 12,
                               fontFamily: "inherit",
@@ -494,9 +497,10 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
                               border: "none",
                               background:
                                 noStock || !canAdd
-                                  ? C.light
-                                  : `linear-gradient(135deg,${C.teal},#0d9b78)`,
-                              color: noStock || !canAdd ? C.muted : "white",
+                                  ? COLORS.light
+                                  : `linear-gradient(135deg,${COLORS.teal},#0d9b78)`,
+                              color:
+                                noStock || !canAdd ? COLORS.muted : "white",
                               cursor: noStock ? "not-allowed" : "pointer",
                               fontSize: 12,
                               fontWeight: 600,
@@ -516,7 +520,208 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
           </div>
 
           {/* RIGHT: cart */}
-          <div></div>
+          <div>
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+                marginBottom: 10,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              🛒 Panier{" "}
+              <span
+                style={{ fontSize: 12, fontWeight: 400, color: COLORS.muted }}
+              >
+                ({cart.length} ligne{cart.length > 1 ? "s" : ""})
+              </span>
+            </div>
+
+            {cart.length === 0 ? (
+              <div
+                style={{
+                  padding: 32,
+                  textAlign: "center",
+                  background: COLORS.card,
+                  borderRadius: 12,
+                  border: `2px dashed ${COLORS.border}`,
+                  color: COLORS.muted,
+                }}
+              >
+                <div style={{ fontSize: 24, marginBottom: 8 }}>🛒</div>
+                <div style={{ fontSize: 13 }}>
+                  Ajoutez des ventes depuis la liste
+                </div>
+              </div>
+            ) : (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                    maxHeight: 360,
+                    overflowY: "auto",
+                    marginBottom: 12,
+                  }}
+                >
+                  {cart.map((c) => {
+                    const p = products.find((pr) => pr.pid === COLORS.pid);
+                    const s = getS(stock, bId, COLORS.pid);
+                    const marg = (COLORS.price - s.costPrice) * COLORS.qty;
+                    return (
+                      <div
+                        key={COLORS.id}
+                        style={{
+                          background: COLORS.card,
+                          borderRadius: 10,
+                          padding: "10px 12px",
+                          border: `1px solid ${marg >= 0 ? "#e8f8f4" : COLORS.border}`,
+                          display: "flex",
+                          gap: 10,
+                          alignItems: "center",
+                        }}
+                      >
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              fontWeight: 600,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {p?.brand} {p?.name}
+                          </div>
+                          <div style={{ fontSize: 11, color: COLORS.muted }}>
+                            {COLORS.qty} u. @ {fmt(COLORS.price)} F
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              fontWeight: 600,
+                              color: marg >= 0 ? COLORS.teal : COLORS.red,
+                            }}
+                          >
+                            Marge:{fmt(marg)} F
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => removeFromCart(COLORS.id)}
+                          style={{
+                            border: "none",
+                            background: "none",
+                            cursor: "pointer",
+                            color: COLORS.red,
+                            padding: 4,
+                            borderRadius: 4,
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div
+                  style={{
+                    padding: "12px 14px",
+                    background: `linear-gradient(135deg, ${COLORS.navy},#0c1f5e)`,
+                    borderRadius: 10,
+                    color: "white",
+                    marginBottom: 12,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: 4,
+                    }}
+                  >
+                    <span styles={{ fontSize: 11, opacity: 0.7 }}>
+                      Total ventes
+                    </span>
+                    <span style={{ fontWeight: 700 }}>{fmt(totV)} F</span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: 4,
+                    }}
+                  >
+                    <span style={{ fontSize: 11, opacity: 0.7 }}>
+                      Total marges
+                    </span>
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        color: totM >= 0 ? "#55efc4" : "#ff7675",
+                      }}
+                    >
+                      {fmt(totM)} F
+                    </span>
+                  </div>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <span style={{ fontSize: 11, opacity: 0.7 }}>
+                      Taux moyen
+                    </span>
+                    <span style={{ fontWeight: 600 }}>
+                      {totV > 0 ? Math.round((totM / totV) * 100) + "%" : "—"}
+                    </span>
+                  </div>
+                </div>
+                <Btn
+                  onClick={validate}
+                  style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    fontSize: 14,
+                    padding: "12px",
+                  }}
+                >
+                  <Check size={16} />
+                  Valider {cart.length} vente{cart.length > 1 ? "s" : ""}
+                </Btn>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {!bId && (
+        <div
+          style={{
+            padding: 40,
+            textAlign: "center",
+            background: COLORS.card,
+            borderRadius: 12,
+            border: `1px solid ${COLORS.border}`,
+          }}
+        >
+          <Store size={40} color={COLORS.muted} style={{ marginBottom: 12 }} />
+          <div
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: COLORS.text,
+              marginBottom: 6,
+            }}
+          >
+            Selectionnez une boutique
+          </div>
+          <div style={{ fontSize: 13, color: COLORS.muted }}>
+            Choisissez la boutique pour commencer la saisie des ventes
+          </div>
         </div>
       )}
     </div>
