@@ -111,4 +111,414 @@ export default function VentePage({ boutiques, products, eng, onEvent }) {
   };
 
   const zeroStock = allProds.filter((p) => p.qty === 0);
+
+  return (
+    <div>
+      <PH
+        title="Saisie des Ventes"
+        sub="Ajoutez chaque vente au panier — plusieurs ventes du meme article a prix differents sont possibles"
+      />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 14,
+          maxWidth: 700,
+          marginBottom: 10,
+        }}
+      >
+        <Fsel
+          label="Boutique"
+          value={bId}
+          onChange={(e) => {
+            setBId(e.target.value);
+            setCart([]);
+            setInputs({});
+            setMsg(null);
+          }}
+          options={boutiques
+            .filter((b) => b.type === "boutique")
+            .map((b) => ({ v: b.id, l: `${b.name}-${b.responsible}` }))}
+        />
+        <div>
+          <label
+            style={{
+              fontSize: 12,
+              color: C.muted,
+              marginBottom: 4,
+              display: "block",
+            }}
+          >
+            Date des ventes
+          </label>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              style={{
+                flex: 1,
+                padding: "9x 12px",
+                borderRadius: 8,
+                border: `1px solid ${C.border}`,
+                fontSize: 13,
+                outline: "none",
+                fontFamily: "inherit",
+                color: C.text,
+              }}
+            />
+          </div>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            {[
+              { l: "Aujourd'hui", d: 0 },
+              { l: "Hier", d: 1 },
+              { l: "Avant-hier", d: 2 },
+            ].map(({ l, d }) => {
+              const dd = new Date();
+              dd.setDate(dd.getDate() - d);
+              const ds = dd.toISOString().split("T")[0];
+              const active = date === ds;
+              return (
+                <button
+                  key={d}
+                  onClick={() => setDate(ds)}
+                  style={{
+                    flex: 1,
+                    padding: "5px 4px",
+                    borderRadius: 6,
+                    border: `1px solid ${active ? C.teal : C.border}`,
+                    background: active ? `${C.teal}18` : "white",
+                    color: active ? C.teal : C.muted,
+                    cursor: "pointer",
+                    fontSize: 11,
+                    fontWeight: active ? 600 : 400,
+                  }}
+                >
+                  {1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {date !== todayStr() && (
+        <div
+          style={{
+            padding: "8px 14px",
+            background: "#e8f4ff",
+            borderRadius: 8,
+            marginBottom: 14,
+            fontSize: 12,
+            color: C.blue,
+          }}
+        >
+          📅 Saisie en cours pour le{" "}
+          <strong>
+            {new Date(date + "T12:00").toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+            })}
+          </strong>{" "}
+          — les ventes seront enregistrees a cette date
+        </div>
+      )}
+
+      {bId && zeroStock.length > 0 && (
+        <div
+          style={{
+            padding: "9px 14px",
+            background: "#fff8f0",
+            borderRadius: 8,
+            marginBottom: 14,
+            fontSize: 12,
+            color: C.orange,
+          }}
+        >
+          <AlertTriangle
+            size={12}
+            style={{ marginRight: 6, verticalAlign: "middle" }}
+          />
+          <strong>{zeroStock.length} rupture(s):</strong>{" "}
+          {zeroStock
+            .slice(0, 5)
+            .map((p) => `${p.brand} ${p.name}`)
+            .join(" • ")}
+          {zeroStock.length > 5 ? ` +${zeroStock.length - 5}...` : ""}
+        </div>
+      )}
+
+      {bId && (
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr" }}>
+          {/* LEFT: product browser */}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                gap: 10,
+                marginBottom: 12,
+                flexWrap: "wrap",
+              }}
+            >
+              <div style={{ flex: 1, position: "relative", minWidth: 180 }}>
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="🔍  Rechercher un produit..."
+                  style={{
+                    width: "100%",
+                    padding: "9px 12px",
+                    borderRadius: 9,
+                    border: `1px solid ${C.border}`,
+                    fontSize: 13,
+                    outline: "none",
+                    boxSizing: "border-box",
+                    fontFamily: "inherit",
+                    color: C.text,
+                  }}
+                />
+                {search && (
+                  <button
+                    onClick={() => setSearch("")}
+                    style={{
+                      position: "absolute",
+                      right: 8,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                      color: C.muted,
+                      fontSize: 16,
+                    }}
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              {["all", "telephone", "accessoire"].map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setFilterCat(t)}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 7,
+                    border: `1px solid ${filterCat === t ? C.navy : C.border}`,
+                    background: filterCat === t ? C.navy : "white",
+                    color: filterCat === t ? "white" : C.text,
+                    fontSize: 12,
+                    fontWeight: filterCat === t ? 600 : 400,
+                  }}
+                >
+                  {{ all: "Tout", telephone: "Tel", accessoire: "Acc" }[t]}
+                </button>
+              ))}
+            </div>
+
+            <Card
+              style={{
+                padding: 0,
+                overflow: "hidden",
+                maxHeight: 500,
+                overflowY: "auto",
+              }}
+            >
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  fontSize: 13,
+                }}
+              >
+                <thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
+                  <tr
+                    style={{
+                      background: "linear-gradient(135deg,#121f56,#16279b)",
+                    }}
+                  >
+                    {["Produit", "Stock", "PA", "Qte", "Prix vente", ""].map(
+                      (h, i) => (
+                        <th
+                          key={i}
+                          style={{
+                            padding: "9px 10px",
+                            textAlign: i >= 1 ? "center" : "left",
+                            color: "white",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {h}
+                        </th>
+                      ),
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {displayed.length === 0 && (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        style={{
+                          padding: 24,
+                          textAlign: "center",
+                          color: C.muted,
+                        }}
+                      >
+                        Aucun produit trouve
+                      </td>
+                    </tr>
+                  )}
+                  {displayed.map((p, i) => {
+                    const inp = inputs[p.pid] || { qty: "", price: "" };
+                    const inCart = cartQtyFor(p.pid);
+                    const noStock = p.qty === 0;
+                    const rowBg = noStock
+                      ? "#fff8f0"
+                      : i % 2 === 0
+                        ? "white"
+                        : "fafafa";
+                    const canAdd =
+                      parseInt(inp.qty) > 0 && parseFloat(inp.price) > 0;
+                    return (
+                      <tr
+                        key={p.pid}
+                        style={{
+                          borderBottom: `1px solid ${C.border}`,
+                          background: rowBg,
+                        }}
+                      >
+                        <td style={{ padding: "7px 10px" }}>
+                          <div style={{ fontWeight: 500, fontSize: 12 }}>
+                            {p.brand}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              color: C.muted,
+                              maxWidth: 130,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {p.name}
+                          </div>
+                        </td>
+                        <td style={{ padding: "7px 8px", textAlign: "center" }}>
+                          <span
+                            style={{
+                              fontWeight: 700,
+                              color:
+                                p.qty === 0
+                                  ? C.red
+                                  : p.qty <= 2
+                                    ? C.orange
+                                    : C.teal,
+                              fontSize: 13,
+                            }}
+                          >
+                            {p.qty}
+                          </span>
+                          {inCart > 0 && (
+                            <div style={{ fontSize: 10, color: C.orange }}>
+                              -{inCart} panier
+                            </div>
+                          )}
+                        </td>
+                        <td
+                          style={{
+                            padding: "7px 8px",
+                            textAlign: "center",
+                            fontSize: 11,
+                            color: C.muted,
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {fmt(p.costPrice)} F
+                        </td>
+                        <td style={{ padding: "5px 6px", textAlign: "center" }}>
+                          <input
+                            type="number"
+                            min="1"
+                            value={inp.qty}
+                            onChange={(e) =>
+                              setInput(p.pid, "qty", e.target.value)
+                            }
+                            disabled={noStock}
+                            placeholder="Qte"
+                            style={{
+                              width: 52,
+                              padding: "5px 6px",
+                              borderRadius: 6,
+                              border: `1px solid ${C.border}`,
+                              textAlign: "center",
+                              fontSize: 12,
+                              fontFamily: "inherit",
+                              background: noStock ? "#f8f9fa" : "white",
+                            }}
+                          />
+                        </td>
+                        <td style={{ padding: "5px 6px", textAlign: "center" }}>
+                          <input
+                            type="number"
+                            min="0"
+                            value={inp.price}
+                            onChange={(e) =>
+                              setInput(p.pid, "price", e.target.value)
+                            }
+                            disabled={noStock}
+                            placeholder="Prix vte"
+                            style={{
+                              width: 88,
+                              padding: "5px 6px",
+                              borderRadius: 6,
+                              border: `1px solid ${C.border}`,
+                              textAlign: "right",
+                              fontSize: 12,
+                              fontFamily: "inherit",
+                              background: noStock ? "#f8f9fa" : "white",
+                            }}
+                          />
+                        </td>
+                        <td style={{ padding: "5px 8px", textAlign: "center" }}>
+                          <button
+                            onClick={() => addToCart(p)}
+                            disabled={noStock || !canAdd}
+                            style={{
+                              padding: "5px 10px",
+                              borderRadius: 6,
+                              border: "none",
+                              background:
+                                noStock || !canAdd
+                                  ? C.light
+                                  : `linear-gradient(135deg,${C.teal},#0d9b78)`,
+                              color: noStock || !canAdd ? C.muted : "white",
+                              cursor: noStock ? "not-allowed" : "pointer",
+                              fontSize: 12,
+                              fontWeight: 600,
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            + Panier
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </Card>
+            {msg && <AM type={msg.t}>{msg.m}</AM>}
+          </div>
+
+          {/* RIGHT: cart */}
+          <div></div>
+        </div>
+      )}
+    </div>
+  );
 }
