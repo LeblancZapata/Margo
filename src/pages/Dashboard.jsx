@@ -49,7 +49,7 @@ export default function DashPage({ events, boutiques, products, eng }) {
         t: v > 0 ? Math.round((m / v) * 100) : 0,
       };
     });
-  const LOW_SEUIL = 2;
+  const LOW_SEUIL = 1;
   const stockAlerts = [];
   boutiques.forEach((b) => {
     const sb = stock[b.id] || {};

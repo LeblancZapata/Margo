@@ -188,8 +188,8 @@ export const PRODUCTS_SEED = [
     archived: false,
   },
   {
-    pid: "px17",
-    name: "Note 11 128/6",
+    pid: "px18",
+    name: "Note 11 Pro 128/6",
     brand: "REDMI",
     category: "telephone",
     salePrice: 0,
@@ -512,14 +512,6 @@ export const PRODUCTS_SEED = [
     name: "1207",
     brand: "SAMSUNG",
     category: "telephone",
-    salePrice: 0,
-    archived: false,
-  },
-  {
-    pid: "px153",
-    name: "Oraimo Type C 2A",
-    brand: "CHARGEUR",
-    category: "accessoire",
     salePrice: 0,
     archived: false,
   },
@@ -861,7 +853,7 @@ export const PRODUCTS_SEED = [
   },
 ];
 
-export const EVENT_SEED = [
+export const EVENTS_SEED = [
   {
     id: "init0000",
     type: "entry",
@@ -1349,7 +1341,7 @@ export const EVENT_SEED = [
     boutiqueId: "b2",
     productId: "px3",
     quantity: 1,
-    purchasePrice: 60500.0,
+    purchasePrice: 64900.0,
     source: "initial",
   },
   {
@@ -1379,7 +1371,7 @@ export const EVENT_SEED = [
     boutiqueId: "b2",
     productId: "px11",
     quantity: 1,
-    purchasePrice: 51800.0,
+    purchasePrice: 62300,
     source: "initial",
   },
   {
@@ -1389,7 +1381,7 @@ export const EVENT_SEED = [
     boutiqueId: "b2",
     productId: "px24",
     quantity: 1,
-    purchasePrice: 39000.0,
+    purchasePrice: 43500.0,
     source: "initial",
   },
   {
@@ -1409,7 +1401,7 @@ export const EVENT_SEED = [
     boutiqueId: "b2",
     productId: "px23",
     quantity: 1,
-    purchasePrice: 45000.0,
+    purchasePrice: 46000.0,
     source: "initial",
   },
   {
@@ -1429,7 +1421,7 @@ export const EVENT_SEED = [
     boutiqueId: "b2",
     productId: "px27",
     quantity: 1,
-    purchasePrice: 8500.0,
+    purchasePrice: 8000.0,
     source: "initial",
   },
   {
@@ -1549,7 +1541,7 @@ export const EVENT_SEED = [
     boutiqueId: "b2",
     productId: "px71",
     quantity: 1,
-    purchasePrice: 2000.0,
+    purchasePrice: 2400.0,
     source: "initial",
   },
   {
@@ -1709,7 +1701,7 @@ export const EVENT_SEED = [
     boutiqueId: "b3",
     productId: "px11",
     quantity: 2,
-    purchasePrice: 51800.0,
+    purchasePrice: 62300,
     source: "initial",
   },
   {
@@ -1749,7 +1741,7 @@ export const EVENT_SEED = [
     boutiqueId: "b3",
     productId: "px23",
     quantity: 1,
-    purchasePrice: 45000.0,
+    purchasePrice: 46000.0,
     source: "initial",
   },
   {
@@ -1809,7 +1801,7 @@ export const EVENT_SEED = [
     boutiqueId: "b3",
     productId: "px31",
     quantity: 6,
-    purchasePrice: 5300.0,
+    purchasePrice: 4850.0,
     source: "initial",
   },
   {
@@ -1869,7 +1861,7 @@ export const EVENT_SEED = [
     boutiqueId: "b3",
     productId: "px56",
     quantity: 5,
-    purchasePrice: 35000.0,
+    purchasePrice: 3500.0,
     source: "initial",
   },
   {
@@ -1889,7 +1881,7 @@ export const EVENT_SEED = [
     boutiqueId: "b3",
     productId: "px94",
     quantity: 32,
-    purchasePrice: 109.0,
+    purchasePrice: 200.0,
     source: "initial",
   },
   {
@@ -1899,7 +1891,7 @@ export const EVENT_SEED = [
     boutiqueId: "b3",
     productId: "px106",
     quantity: 12,
-    purchasePrice: 1543.0,
+    purchasePrice: 1239.0,
     source: "initial",
   },
   {
@@ -2029,7 +2021,7 @@ export const EVENT_SEED = [
     boutiqueId: "b4",
     productId: "px11",
     quantity: 1,
-    purchasePrice: 51800.0,
+    purchasePrice: 62300,
     source: "initial",
   },
   {
@@ -2099,7 +2091,7 @@ export const EVENT_SEED = [
     boutiqueId: "b4",
     productId: "px31",
     quantity: 3,
-    purchasePrice: 5300.0,
+    purchasePrice: 4850.0,
     source: "initial",
   },
   {
@@ -2269,7 +2261,7 @@ export const EVENT_SEED = [
     boutiqueId: "b4",
     productId: "px94",
     quantity: 20,
-    purchasePrice: 326.0,
+    purchasePrice: 200.0,
     source: "initial",
   },
   {
@@ -2349,7 +2341,7 @@ export const EVENT_SEED = [
     boutiqueId: "b6",
     productId: "px53",
     quantity: 1,
-    purchasePrice: 47900.0,
+    purchasePrice: 48900.0,
     source: "initial",
   },
   {
@@ -2359,7 +2351,7 @@ export const EVENT_SEED = [
     boutiqueId: "b6",
     productId: "px150",
     quantity: 1,
-    purchasePrice: 48900.0,
+    purchasePrice: 47900.0,
     source: "initial",
   },
   {
@@ -2409,7 +2401,7 @@ export const EVENT_SEED = [
     boutiqueId: "b6",
     productId: "px94",
     quantity: 6,
-    purchasePrice: 109.0,
+    purchasePrice: 200.0,
     source: "initial",
   },
   {
@@ -2499,7 +2491,7 @@ export const EVENT_SEED = [
     boutiqueId: "b7",
     productId: "px145",
     quantity: 2,
-    purchasePrice: 36500.0,
+    purchasePrice: 34000.0,
     source: "initial",
   },
   {
@@ -2599,7 +2591,7 @@ export const EVENT_SEED = [
     boutiqueId: "b7",
     productId: "px11",
     quantity: 4,
-    purchasePrice: 51800.0,
+    purchasePrice: 62300,
     source: "initial",
   },
   {
@@ -2659,7 +2651,7 @@ export const EVENT_SEED = [
     boutiqueId: "b7",
     productId: "px148",
     quantity: 3,
-    purchasePrice: 61000.0,
+    purchasePrice: 59000.0,
     source: "initial",
   },
   {
@@ -2739,7 +2731,7 @@ export const EVENT_SEED = [
     boutiqueId: "b7",
     productId: "px94",
     quantity: 20,
-    purchasePrice: 109.0,
+    purchasePrice: 200.0,
     source: "initial",
   },
 ];

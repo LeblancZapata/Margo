@@ -325,7 +325,7 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
                 key={i}
                 style={{
                   padding: "9px 12px",
-                  textAlign: COLORS.a || "left",
+                  textAlign: c.a || "left",
                   fontWeight: 600,
                   color: COLORS.muted,
                   fontSize: 12,
@@ -334,7 +334,7 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
                   whiteSpace: "nowrap",
                 }}
               >
-                {COLORS.l}
+                {c.l}
               </th>
             ))}
           </tr>
@@ -369,10 +369,10 @@ export function DT({ cols, rows, empty = "Aucune donnee" }) {
                     key={j}
                     style={{
                       padding: "9px 12px",
-                      textAlign: COLORS.a || "left",
+                      textAlign: c.a || "left",
                     }}
                   >
-                    {COLORS.r ? COLORS.r(r) : r[COLORS.k]}
+                    {c.r ? c.r(r) : r[c.k]}
                   </td>
                 ))}
               </tr>
