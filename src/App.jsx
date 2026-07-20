@@ -10,6 +10,8 @@ import DashPage from "./pages/Dashboard";
 
 import VentePage from "./pages/Ventes";
 
+import ApproPage from "./pages/Appro";
+
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [boutiques, setBoutiques] = useState(BOUTIQUES_SEED);
@@ -42,6 +44,14 @@ export default function App() {
             products={products}
             eng={eng}
             onEvent={addEv}
+          />
+        ) : page === "appro" ? (
+          <ApproPage
+            boutiques={boutiques}
+            products={products}
+            eng={eng}
+            onEvent={addEv}
+            setProducts={setProducts}
           />
         ) : (
           <h2>À venir : {page}</h2>

@@ -278,6 +278,176 @@ export default function ApproPage({
             </div>
             {msg && <AM type={msg.t}>{msg.m}</AM>}
           </Card>
+
+          {newProd && (
+            <Card style={{ border: `1px solid ${COLORS.teal}` }}>
+              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>
+                Nouveau produit
+              </div>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 12 }}
+              >
+                <FIn
+                  label="Nom"
+                  value={newProd.name}
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, name: e.target.value })
+                  }
+                  placeholder="Ex: Tecno Camon 50"
+                />
+
+                <FIn
+                  label="Marque"
+                  value={newProd.brand}
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, brand: e.target.value })
+                  }
+                  placeholder="Ex: Tecno"
+                />
+                <div>
+                  <label
+                    style={{
+                      fontSize: 12,
+                      color: COLORS.muted,
+                      marginBottom: 6,
+                      display: "block",
+                    }}
+                  >
+                    Catégorie
+                  </label>
+                  <div style={{ display: "flex", gap: 10 }}>
+                    {["telephone", "accessoire"].map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setNewProd({ ...newProd, category: c })}
+                        style={{
+                          padding: "7px 14px",
+                          borderRadius: 8,
+                          cursor: "pointer",
+                          fontSize: 12,
+                          border: `1px solid ${
+                            newProd.category === c ? COLORS.teal : COLORS.border
+                          }`,
+                          background:
+                            newProd.category === c
+                              ? `${COLORS.teal}15`
+                              : "white",
+                          color:
+                            newProd.category === c ? COLORS.teal : COLORS.text,
+                        }}
+                      >
+                        {c === "telephone" ? "Telephone" : "Accessoire"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <FIn
+                  label="Prix d'achat reference (FCFA)"
+                  type="number"
+                  value={newProd.purchasePrice}
+                  onChange={(e) =>
+                    setNewProd({ ...newProd, purchasePrice: e.target.value })
+                  }
+                  placeholder="Ex: 55000"
+                />
+              </div>
+              <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
+                <Btn onClick={saveNewProd}>
+                  <Check size={14} />
+                  Créer et utiliser
+                </Btn>
+                <Btn variant="light" onClick={() => setNewProd(null)}>
+                  <X size={14} />
+                  Annuler
+                </Btn>
+              </div>
+            </Card>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {/* Current stock card */}
+          <Card
+            style={{
+              background: `linear-gradient(135deg, ${COLORS.navy},#0c1f5e)`,
+              color: "white",
+            }}
+          >
+            <div style={{ fontSize: 11, opacity: 0.6, marginBottom: 4 }}>
+              Stock actuel —{" "}
+              {boutiques.find((b) => b.id === bId)?.name || "Boutique"}
+            </div>
+            <div style={{ fontSize: 42, fontWeight: 800, lineHeight: 1 }}>
+              {currentS.qty}
+            </div>
+            <div style={{ fontSize: 13, opacity: 0.7, marginTop: 6 }}>
+              {prod?.name || "—"}
+            </div>
+            <div
+              style={{
+                marginTop: 8,
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: 12,
+                opacity: 0.6,
+              }}
+            >
+              <span>Prix d'achat actuel</span>
+              <span style={{ fontWeight: 700, fontSize: 14, opacity: 1 }}>
+                {currentS.qty > 0 ? fmt(currentS.costPrice) + " F" : "—"}
+              </span>
+            </div>
+
+            {currentS.qty > 0 && (
+              <div
+                style={{
+                  marginTop: 4,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: 12,
+                  opacity: 0.6,
+                }}
+              >
+                <span>Valeur totale (PA)</span>
+                <span style={{ fontWeight: 600, opacity: 1 }}>
+                  {fmt(currentS.costVal)} F
+                </span>
+              </div>
+            )}
+          </Card>
+
+          {/* Virtual gain/loss preview  */}
+          {bId && pId && newPriceN > 0 && (
+            <VirtualPreview
+              currentQty={natQty}
+              currentPrice={natPrice}
+              newPrice={newPriceN}
+              newQty={newQtyN}
+              productName={prod?.name}
+            />
+          )}
+
+          {/* Same price = no adjustment */}
+          {bId &&
+            pId &&
+            newPriceN > 0 &&
+            natQty > 0 &&
+            Math.round(natPrice) === Math.round(newPriceN) && (
+              <div
+                style={{
+                  padding: "12px 14px",
+                  background: COLORS.light,
+                  borderRadius: 10,
+                  border: `1px solid ${COLORS.border}`,
+                  fontSize: 13,
+                  color: COLORS.muted,
+                }}
+              >
+                <strong style={{ color: COLORS.text }}>Prix identique</strong>{" "}
+                Aucun ajustement virtuel. Les {newQtyN} nouvelles unites
+                s'ajoutent au stock existant au meme prix ({fmt(newPriceN)} F).
+              </div>
+            )}
         </div>
       </div>
     </div>
