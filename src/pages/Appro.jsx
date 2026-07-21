@@ -106,7 +106,7 @@ export default function ApproPage({
     <div>
       <PH
         title="Approvisionnement"
-        sub="Chaque réception fixe le prix d'achat NATIONAL — le stock de toutes les boutiques est réévalué automatiquement"
+        sub="Chaque réception met à jour le prix d'achat du produit et réévalue automatiquement le stock de toutes les boutiques"
       />
       <div
         style={{
