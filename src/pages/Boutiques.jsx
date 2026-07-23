@@ -218,8 +218,8 @@ export default function BoutiquesPage({
           }}
         >
           <Stat
-            label="Articles en stock"
-            value={stockRows.filter((r) => r.qty > 0).length}
+            label="Unités en stock"
+            value={stockRows.reduce((s, r) => s + r.qty, 0)}
             Icon={Package}
             color={COLORS.navy}
           />
@@ -536,4 +536,223 @@ export default function BoutiquesPage({
       </div>
     );
   }
+  return (
+    <div>
+      <PH
+        title="Boutiques & Stock"
+        sub="Cliquez sur une boutique pour voir son stock et le fond au prix d'achat"
+        right={[
+          <Btn
+            key="x"
+            variant="navy"
+            onClick={() =>
+              exportStock({ stock, prices: eng.prices, products, boutiques })
+            }
+          >
+            <Download size={14} />
+            Stock global Excel
+          </Btn>,
+          <Btn
+            key="a"
+            onClick={() => setAddForm({ name: "", responsible: "" })}
+          >
+            <Plus size={14} />
+            Ajouter boutique
+          </Btn>,
+        ]}
+      />
+
+      {addForm && (
+        <Card
+          style={{
+            marginBottom: 18,
+            border: `1px solid ${COLORS.teal}`,
+            maxWidth: 480,
+          }}
+        >
+          <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>
+            Nouvelle boutique
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
+            <FIn
+              label="Nom"
+              value={addForm.name}
+              onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
+            />
+            <FIn
+              label="Responsable"
+              value={addForm.responsible}
+              onChange={(e) =>
+                setAddForm({ ...addForm, responsible: e.target.value })
+              }
+            />
+          </div>
+          <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
+            <Btn
+              onClick={() => {
+                if (!addForm.name || !addForm.responsible) return;
+                setBoutiques((bs) => [
+                  ...bs,
+                  { ...addForm, id: uid(), type: "boutique" },
+                ]);
+                setAddForm(null);
+              }}
+            >
+              <Plus size={14} />
+              Ajouter
+            </Btn>
+            <Btn variant="light" onClick={() => setAddForm(null)}>
+              <X size={14} />
+              Annuler
+            </Btn>
+          </div>
+        </Card>
+      )}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+          gap: 14,
+        }}
+      >
+        {allB.map((b) => {
+          const cv = totalCostVal(stock, [b.id]);
+          const prodCount = products.filter(
+            (p) => !p.archived && (stock?.[b.id]?.[p.pid]?.qty || 0) > 0,
+          ).length;
+          const zeroProds = products.filter(
+            (p) =>
+              !p.archived &&
+              stock?.[b.id]?.[p.pid] &&
+              (stock[b.id][p.pid]?.qty || 0) === 0,
+          ).length;
+          return (
+            <div
+              key={b.id}
+              onClick={() => setSelected(b.id)}
+              style={{
+                background: COLORS.card,
+                borderRadius: 12,
+                padding: 18,
+                border: `1px solid ${b.type === "warehouse" ? COLORS.blue : COLORS.border}`,
+                boxShadow: "0 1px 4px rgba(0, 0,0,0.06)",
+                cursor: "pointer",
+                transition: "all .15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow =
+                  "0 4px 14px rgba(0, 0,0,0.12)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow =
+                  "0 1px 4px rgba(0, 0, 0, 0.06)";
+                e.currentTarget.style.transform = "";
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  marginBottom: 12,
+                }}
+              >
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 11,
+                    background:
+                      b.type === "warehouse"
+                        ? `linear-gradient(135deg, ${COLORS.blue}, #0856a0)`
+                        : `linear-gradient(135deg, ${COLORS.navy}, ${COLORS.teal})`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 19,
+                    color: "white",
+                    fontWeight: 700,
+                    flexShrink: 0,
+                  }}
+                >
+                  {b.type === "warehouse" ? "🏭" : b.name[0]}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: 13,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {b.name}
+                  </div>
+                  <div style={{ fontSize: 12, color: COLORS.muted }}>
+                    {b.responsible}
+                  </div>
+                </div>
+                <ChevronRight size={16} color={COLORS.muted} />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "8px 12px",
+                  background: cv > 0 ? `${COLORS.teal}10` : COLORS.light,
+                  borderRadius: 8,
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: 11, color: COLORS.muted }}>
+                    {" "}
+                    Fond (PA)
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: COLORS.navy,
+                    }}
+                  >
+                    {fmt(cv)} F
+                  </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 11, color: COLORS.muted }}>Refs</div>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: COLORS.teal,
+                    }}
+                  >
+                    {prodCount}
+                  </div>
+                </div>
+              </div>
+              {zeroProds > 0 && (
+                <div
+                  style={{
+                    marginTop: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 5,
+                    fontSize: 11,
+                    color: COLORS.red,
+                  }}
+                >
+                  <AlertTriangle size={11} />
+                  {zeroProds} rupture(s)
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }

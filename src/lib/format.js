@@ -1,7 +1,9 @@
 export const fmt = (n) =>
   n == null || isNaN(n)
     ? "—"
-    : new Intl.NumberFormat("fr-FR").format(Math.round(n));
+    : new Intl.NumberFormat("fr-FR")
+        .format(Math.round(n))
+        .replace(/\u202f/g, "\u00a0");
 export const fmtS = (n) => (n >= 0 ? `+${fmt(n)} F` : `${fmt(n)} F`);
 export const uid = () =>
   crypto.randomUUID
