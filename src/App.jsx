@@ -14,6 +14,8 @@ import ApproPage from "./pages/Appro";
 
 import BoutiquesPage from "./pages/Boutiques";
 
+import AvancesPage from "./pages/Avances";
+
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [boutiques, setBoutiques] = useState(BOUTIQUES_SEED);
@@ -62,6 +64,15 @@ export default function App() {
             products={products}
             setProducts={setProducts}
             eng={eng}
+          />
+        ) : page === "avances" ? (
+          <AvancesPage
+            boutiques={boutiques}
+            products={products}
+            eng={eng}
+            avances={avances}
+            setAvances={setAvances}
+            onEvent={addEv}
           />
         ) : (
           <h2>À venir : {page}</h2>
